@@ -1,0 +1,25 @@
+{
+	"port": 9001,
+	"rpcHost": "127.0.0.1",
+	"rpcPort": 7000,
+	"tmpDir": "tmp",
+	"logDir": "log",
+	"bunyan": {
+		"name": "HTTPAPI",
+		"src": true,
+		"streams": [
+			{
+				"level": "info",
+				"path": "./log/info.log"
+			},
+			{
+				"level": "warn",
+				"path": "./log/warn.log"
+			},
+			{
+				"level": "error",
+				"path": "./log/error.log"
+			}
+		]
+	}
+}
