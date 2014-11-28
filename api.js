@@ -3,8 +3,9 @@ var fs = require('fs');
 var wait = require('wait.for');
 var jsonrpc = require('multitransport-jsonrpc');
 var config = require('config');
+var requireDir = require('require-dir');
 
-var methods = {};
+var methods = requireDir('./methods', { recurse: true });
 var rpc = new jsonrpc.client(new jsonrpc.transports.client.tcp(config.rpcHost, config.rpcPort));
 rpc.register(['obj', 'api', 'admin', 'gs']);
 
@@ -39,13 +40,6 @@ global.gsData = gsData;
 
 
 exports.init = function() {
-	// Fetch methods.
-	var methodNames = fs.readdirSync('./methods');
-	for (var i = 0; i < methodNames.length; i++) {
-		var thisMethod = methodNames[i].split('.')[0];
-		methods[thisMethod] = require('./methods/' + thisMethod);
-	}
-
 	// Fetch GSJS config (skills, locations and upgrades).
 	log.info('Fetching GSJS config...');
 	var gsjsConfig = rpcCall('gs', 'getGsjsConfig');
