@@ -1,0 +1,20 @@
+[Unit]
+Description=Eleven Giants HTTP API
+Wants=eleven-server.service
+After=eleven-server.service
+
+[Service]
+WorkingDirectory=/eleven/eleven-http-api
+ExecStart=/usr/bin/node --harmony ./server.js
+Type=simple
+Restart=always
+RestartSec=1s
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=eleven-http-api
+User=eleven
+Group=eleven
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
