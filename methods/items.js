@@ -94,3 +94,15 @@ exports.info = function(req, pc) {
 	return body;
 };
 
+
+/*
+ * items.stackInfo
+ * Fetch details about an item stack (usually a trophy).
+ */
+exports.stackInfo = function(req, pc) {
+	if (!req.query.item_stack) {
+		throw('tsid_required');
+	}
+	return rpcObjCall(req.query.item_stack, 'adminGetInfoScoped', [{ viewer_tsid: pc }]);
+};
+
