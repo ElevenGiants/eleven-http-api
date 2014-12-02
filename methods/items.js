@@ -87,7 +87,8 @@ exports.info = function(req, pc) {
 				name_single: details.name_single,
 				name_plural: details.name_plural,
 				info_url: '/item/' + item_class,
-				is_sdbable: details.is_sdbable
+				// is_sdbable: details.is_sdbable
+				is_sdbable: false
 			};
 		}
 	}
