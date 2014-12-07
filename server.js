@@ -25,6 +25,9 @@ function init() {
 		uploadDir: config.tmpDir,
 		limit: '10mb'
 	}));
+	app.all('/crossdomain.xml', function (req, res) {
+		res.sendFile(__dirname + '/crossdomain.xml');
+	});
 	app.all('/:func', multiparty, logRequest, handleRequest, removeTempFiles);
 	app.all('/simple/:func', multiparty, logRequest, handleRequest, removeTempFiles);
 	app.listen(config.port);
