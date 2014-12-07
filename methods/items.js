@@ -87,10 +87,23 @@ exports.info = function(req, pc) {
 				name_single: details.name_single,
 				name_plural: details.name_plural,
 				info_url: '/item/' + item_class,
-				is_sdbable: details.is_sdbable
+				// is_sdbable: details.is_sdbable
+				is_sdbable: false
 			};
 		}
 	}
 	return body;
+};
+
+
+/*
+ * items.stackInfo
+ * Fetch details about an item stack (usually a trophy).
+ */
+exports.stackInfo = function(req, pc) {
+	if (!req.query.item_stack) {
+		throw('tsid_required');
+	}
+	return rpcObjCall(req.query.item_stack, 'adminGetInfoScoped', [{ viewer_tsid: pc }]);
 };
 
