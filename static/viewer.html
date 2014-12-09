@@ -24,7 +24,8 @@
 			params[value[0]] = value[1];
 		});
 		var report = params.id;
-		$.getJSON('saved/' + report + '.json', function(data) {
+		console.log(window.location.pathname);
+		$.getJSON(window.location.pathname + '/saved/' + report + '.json', function(data) {
 			document.getElementById('report-title').innerHTML += ' (' + report + ')';
 			document.getElementById('report-details').innerHTML = '<span>Bootstrap version:</span>' + data.bootstrap_version + '<br>' +
 				'<span>Error ID:</span>' + data.error_id + '<br>' +
@@ -41,7 +42,7 @@
 				'<span>Is debug:</span>' + (data.is_debug == 1) + '<br>' +
 				'<span>Is silent:</span>' + (data.is_silent == 1);
 			document.getElementById('report-flash-error').innerHTML = data.flash_error;
-			var img = 'saved/' + report + '.png';
+			var img = window.location.pathname + '/saved/' + report + '.png';
 			$.get(img).done(function() { 
 					document.getElementById('report-image').innerHTML = '<img src=\"' + img + '\" />';
 			});

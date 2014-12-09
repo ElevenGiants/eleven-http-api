@@ -13,7 +13,7 @@ exports.attachErrorImage = function(req, pc) {
 		for (var file in req.files) {
 			if (req.files.hasOwnProperty(file)) {
 				var errorImage = fs.readFileSync(req.files[file].path);
-				fs.writeFileSync('reports/saved/' + req.body.error_id + '.png', errorImage);
+				var test = fs.writeFileSync(config.reportDir + '/' + req.body.error_id + '.png', errorImage);
 			}
 		}
 		return {};
@@ -32,7 +32,7 @@ exports.attachErrorImage = function(req, pc) {
 exports.error = function(req, pc) {
 	try {
 		var error_id = pc + '_' + Date.now();
-		fs.writeFileSync('reports/saved/' + error_id + '.json', JSON.stringify(req.body));
+		var test = fs.writeFileSync(config.reportDir + '/' + error_id + '.json', JSON.stringify(req.body));
 		sendMessageToSlack('New error report received: ' + error_id, [{
 			title: req.body.flash_error.split('\n')[0],
 			value: req.body.user_error + 
