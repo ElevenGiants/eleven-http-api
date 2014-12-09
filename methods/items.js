@@ -23,7 +23,7 @@ exports.findNearest = function(req, pc) {
  */
 exports.info = function(req, pc) {
 	if (!req.query.item_classes) {
-		throw('item_class_required');
+		throw new Error('item_class_required');
 	}
 	var body = {};
 	var items = req.query.item_classes.split(',');
@@ -102,7 +102,7 @@ exports.info = function(req, pc) {
  */
 exports.stackInfo = function(req, pc) {
 	if (!req.query.item_stack) {
-		throw('tsid_required');
+		throw new Error('tsid_required');
 	}
 	return rpcObjCall(req.query.item_stack, 'adminGetInfoScoped', [{ viewer_tsid: pc }]);
 };

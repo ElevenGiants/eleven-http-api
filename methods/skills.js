@@ -11,10 +11,10 @@ exports.getInfo = function(req, pc) {
 		req.query.skill_class = req.query.skill_id;
 	}
 	if (!req.query.skill_class) {
-		throw('skill_class_required');
+		throw new Error('skill_class_required');
 	}
 	if (!gsData.skills[req.query.skill_class]) {
-		throw('unknown_skill');
+		throw new Error('unknown_skill');
 	}
 
 	var skillInfo = {};
@@ -195,10 +195,10 @@ exports.learn = function(req, pc) {
 		req.query.skill_class = req.query.skill_id;
 	}
 	if (!req.query.skill_class) {
-		throw('skill_class_required');
+		throw new Error('skill_class_required');
 	}
 	if (!gsData.skills[req.query.skill_class]) {
-		throw('unknown_skill');
+		throw new Error('unknown_skill');
 	}
 
 	var ret = rpcObjCall(pc, 'skills_train', [req.query.skill_class]);
@@ -216,10 +216,10 @@ exports.unlearn = function(req, pc) {
 		req.query.skill_class = req.query.skill_id;
 	}
 	if (!req.query.skill_class) {
-		throw('skill_class_required');
+		throw new Error('skill_class_required');
 	}
 	if (!gsData.skills[req.query.skill_class]) {
-		throw('unknown_skill');
+		throw new Error('unknown_skill');
 	}
 
 	var ret = rpcObjCall(pc, 'skills_unlearn', [req.query.skill_class]);

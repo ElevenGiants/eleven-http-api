@@ -4,6 +4,7 @@
 	"rpcPort": 7000,
 	"tmpDir": "tmp",
 	"logDir": "log",
+	"reportDir": "reports",
 	"bunyan": {
 		"name": "HTTPAPI",
 		"src": true,
