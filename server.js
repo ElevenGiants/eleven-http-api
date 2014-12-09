@@ -25,6 +25,7 @@ function init() {
 		uploadDir: config.tmpDir,
 		limit: '10mb'
 	}));
+	app.use('/reports', express.static(__dirname + '/reports'));
 	app.all('/crossdomain.xml', function (req, res) {
 		res.sendFile(__dirname + '/crossdomain.xml');
 	});

@@ -144,3 +144,24 @@ function rpcCall(type, fname, args) {
 	}
 }
 
+
+global.sendMessageToSlack = sendMessageToSlack;
+function sendMessageToSlack(text, fields) {
+	if (!config.slackbot) {
+		return;
+	}
+	var https = require('https');
+	var options = config.slackbot.options;
+	var payload = {
+		"username": "HTTPAPI-Bot",
+		"text": text,
+		"icon_emoji": ":crab:",
+		"fields": fields
+	};
+	var req = https.request(options, null);
+	req.on('error', function err(e) {
+		log.error(e);
+	});
+	req.write(JSON.stringify(payload));
+	req.end();
+}
