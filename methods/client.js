@@ -19,7 +19,7 @@ exports.attachErrorImage = function(req, pc) {
 		return {};
 	}
 	catch (e) {
-		throw('not_saved');
+		throw new Error('not_saved');
 	}
 };
 
@@ -44,7 +44,7 @@ exports.error = function(req, pc) {
 		};
 	}
 	catch (e) {
-		throw('not_saved');
+		throw new Error('not_saved');
 	}
 };
 
