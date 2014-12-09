@@ -13,6 +13,7 @@ function init() {
 	console.log('Starting HTTP API...');
 	mkdirp.sync(config.tmpDir);
 	mkdirp.sync(config.logDir);
+	mkdirp.sync(config.reportDir);
 	global.log = bunyan.createLogger(config.bunyan);
 	api.init();
 	var app = express();
@@ -25,10 +26,16 @@ function init() {
 		uploadDir: config.tmpDir,
 		limit: '10mb'
 	}));
-	app.use('/reports', express.static(__dirname + '/reports'));
-	app.all('/crossdomain.xml', function (req, res) {
-		res.sendFile(__dirname + '/crossdomain.xml');
+	// Error reports.
+	app.use('/reports/saved', express.static(config.reportDir));
+	app.use('/reports', function (req, res) {
+		res.sendFile(__dirname + '/static/viewer.html');
 	});
+	// Flash crossdomain.xml
+	app.all('/crossdomain.xml', function (req, res) {
+		res.sendFile(__dirname + '/static/crossdomain.xml');
+	});
+	// Methods
 	app.all('/:func', multiparty, logRequest, handleRequest, removeTempFiles);
 	app.all('/simple/:func', multiparty, logRequest, handleRequest, removeTempFiles);
 	app.listen(config.port);

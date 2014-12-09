@@ -89,8 +89,9 @@ exports.handle = function(name, req, callback) {
 			var ret = handler(req, pc);
 			ret = getRes(ret);
 			callback(null, ret);
-		} catch(e) {
-			callback(new Error(e));
+		} catch (e) {
+			log.error(e);
+			callback(new Error(e.message));
 		}
 	}
 };
@@ -126,8 +127,7 @@ function rpcObjCall(obj, fname, args) {
 		return res;
 	}
 	catch(e) {
-		log.error(e);
-		throw('RPC error');
+		throw new Error('RPC error');
 	}
 }
 
@@ -139,8 +139,7 @@ function rpcCall(type, fname, args) {
 		return res;
 	}
 	catch(e) {
-		log.error(e);
-		throw('RPC error');
+		throw new Error('RPC error');
 	}
 }
 

@@ -7,7 +7,7 @@ var utils = require('../utils');
  */
 exports.fullInfo = function(req, pc) {
 	if (!req.query.player_tsid) {
-		throw('tsid_required');
+		throw new Error('tsid_required');
 	}
 	var body = rpcObjCall(req.query.player_tsid, 'adminGetFullInfo', [{ viewer_tsid: pc }]);
 	var player = rpcCall('api', 'apiFindObject', [req.query.player_tsid]);
