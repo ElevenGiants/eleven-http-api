@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<style>
+		body { font-family: "Lato", sans-serif; }
+		h1 { font-family: "Varela Round", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; font-weight: 500; }
+		pre { background-color: #eee; padding: 5px; white-space: pre-wrap; }
+		#report-details > span { display: inline-block; width: 150px; font-weight: bold; }
+	</style>
+</head>
+<body>
+	<h1 id="report-title">Error report</h1>
+	<p id="report-details"></p>
+	<pre id="report-flash-error"></pre>
+	<script>
+		var paramArr = window.location.search.substr(1).split('&');
+		var params = {};
+		paramArr.forEach(function work(value) {
+			value = value.split('=');
+			params[value[0]] = value[1];
+		});
+		var report = params.id;
+		$.getJSON('saved/' + report + '.json', function(data) {
+			document.getElementById('report-title').innerHTML += ' (' + report + ')';
+			document.getElementById('report-details').innerHTML = '<span>Bootstrap version:</span>' + data.bootstrap_version + '<br>' +
+				'<span>Error ID:</span>' + data.error_id + '<br>' +
+				'<span>Engine version:</span>' + data.engine_version + '<br> ' +
+				'<span>Stack trace:</span>' + data.stack_trace + '<br>' +
+				'<span>User error:</span>' + data.user_error + '<br>' +
+				'<span>Keywords:</span>' + data.keywords + '<br>' +
+				'<span>Token:</span>' + data.ctoken + '<br>' +
+				'<span>Is abuse report:</span>' + (data.is_abuse == 1) + '<br>' +
+				'<span>Abuser TSID:</span>' + data.abuser_tsid + '<br>' +
+				'<span>Location:</span>' + data.location + '<br>' +
+				'<span>Player TSID:</span>' + data.player_tsid + '<br>' +
+				'<span>Flash version:</span>' + data.fv + '<br>' +
+				'<span>Is debug:</span>' + (data.is_debug == 1) + '<br>' +
+				'<span>Is silent:</span>' + (data.is_silent == 1);
+			document.getElementById('report-flash-error').innerHTML = data.flash_error;
+		});
+	</script>
+</body>
