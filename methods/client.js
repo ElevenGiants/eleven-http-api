@@ -75,3 +75,14 @@ exports.getToken = function(req, pc) {
 	return body;
 };
 
+
+/*
+ * client.performance
+ * Called to log Flash runtime/performance metrics approximately once
+ * per second for non-god users.
+ * see com.tinyspeck.debug.PerfLogger in the client
+ */
+exports.performance = function(req, pc) {
+	// TODO: Implement me.
+	return {};
+};
