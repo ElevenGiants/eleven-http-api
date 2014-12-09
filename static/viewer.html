@@ -24,7 +24,6 @@
 			params[value[0]] = value[1];
 		});
 		var report = params.id;
-		console.log(window.location.pathname);
 		$.getJSON(window.location.pathname + '/saved/' + report + '.json', function(data) {
 			document.getElementById('report-title').innerHTML += ' (' + report + ')';
 			document.getElementById('report-details').innerHTML = '<span>Bootstrap version:</span>' + data.bootstrap_version + '<br>' +
