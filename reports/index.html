@@ -8,12 +8,14 @@
 		h1 { font-family: "Varela Round", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; font-weight: 500; }
 		pre { background-color: #eee; padding: 5px; white-space: pre-wrap; }
 		#report-details > span { display: inline-block; width: 150px; font-weight: bold; }
+		#report-image > img { max-width: 100%; }
 	</style>
 </head>
 <body>
 	<h1 id="report-title">Error report</h1>
 	<p id="report-details"></p>
 	<pre id="report-flash-error"></pre>
+	<p id="report-image"></p>
 	<script>
 		var paramArr = window.location.search.substr(1).split('&');
 		var params = {};
@@ -39,6 +41,10 @@
 				'<span>Is debug:</span>' + (data.is_debug == 1) + '<br>' +
 				'<span>Is silent:</span>' + (data.is_silent == 1);
 			document.getElementById('report-flash-error').innerHTML = data.flash_error;
+			var img = 'saved/' + report + '.png';
+			$.get(img).done(function() { 
+					document.getElementById('report-image').innerHTML = '<img src=\"' + img + '\" />';
+			});
 		});
 	</script>
 </body>
