@@ -9,12 +9,11 @@ var fs = require('fs');
  * (error_id used here to attach image to error report).
  */
 exports.attachErrorImage = function(req, pc) {
-	// Saving images to the temp dir for now.
 	try {
 		for (var file in req.files) {
 			if (req.files.hasOwnProperty(file)) {
 				var errorImage = fs.readFileSync(req.files[file].path);
-				fs.writeFileSync(config.tmpDir + '/' + pc + '_' + Date.now() + '.png', errorImage);
+				fs.writeFileSync('reports/saved/' + req.body.error_id + '.png', errorImage);
 			}
 		}
 		return {};
@@ -31,10 +30,12 @@ exports.attachErrorImage = function(req, pc) {
  * (error_id is always returned. case_id is returned if the player opens a case.)
  */
 exports.error = function(req, pc) {
-	// Saving reports to the temp dir for now.
 	try {
-		fs.writeFileSync(config.tmpDir + '/' + pc + '_' + Date.now() + '.json', JSON.stringify(req.body));
-		return {};
+		var error_id = pc + '_' + Date.now();
+		fs.writeFileSync('reports/saved/' + error_id + '.json', JSON.stringify(req.body));
+		return {
+			error_id: error_id
+		};
 	}
 	catch (e) {
 		throw('not_saved');
