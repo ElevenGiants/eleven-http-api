@@ -22,11 +22,11 @@ exports.findNearest = function(req, pc) {
  * Fetch details on a single or list of item(s). Include extra info if authed.
  */
 exports.info = function(req, pc) {
-	if (!req.query.item_classes) {
+	if (!req.query.item_classes && !req.body.item_classes) {
 		throw new Error('item_class_required');
 	}
 	var body = {};
-	var items = req.query.item_classes.split(',');
+	var items = req.query.item_classes ? req.query.item_classes.split(',') : req.body.item_classes.split(',');
 	for (var i = 0; i < items.length; i++) {
 		var item_class = items[i];
 		if (gsData.items[item_class]) {
