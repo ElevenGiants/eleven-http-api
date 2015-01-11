@@ -1,6 +1,3 @@
-var utils = require('../utils');
-
-
 /*
  * skills.getInfo
  * Fetch information about a skill. Includes state information if authed.
@@ -225,4 +222,3 @@ exports.unlearn = function(req, pc) {
 	var ret = rpcObjCall(pc, 'skills_unlearn', [req.query.skill_class]);
 	return ret;
 };
-

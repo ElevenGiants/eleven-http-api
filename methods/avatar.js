@@ -1,4 +1,3 @@
-var utils = require('../utils');
 var tempOutfits = { // Temporary!
 	0: {
 		"sheets":  '/c2.glitch.bz/avatars/2012-11-06/4278d3563ac0cc7e32723ab78f01dd9e_1352230889',
@@ -62,6 +61,7 @@ exports.getHistory = function(req, pc) {
 	}
 	return { history: history, total: total };
 };
+
 
 /*
  * avatar.switchOutfit

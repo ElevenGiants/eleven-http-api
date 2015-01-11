@@ -1,6 +1,3 @@
-var utils = require('../utils');
-
-
 /*
  * items.findNearest
  * Find the nearest item.
@@ -106,4 +103,3 @@ exports.stackInfo = function(req, pc) {
 	}
 	return rpcObjCall(req.query.item_stack, 'adminGetInfoScoped', [{ viewer_tsid: pc }]);
 };
-
