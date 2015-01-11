@@ -35,7 +35,7 @@ exports.error = function(req, pc) {
 		sendMessageToSlack('New error report received: ' + error_id, [{
 			title: req.body.flash_error.split('\n')[0],
 			value: req.body.user_error + 
-				"\n<http://" + config.slackbot.reportLink + "/reports?id=" + error_id + "|View full report>",
+				'\n<http://' + (config.slackbot ? config.slackbot.reportLink : '') + '/reports?id=' + error_id + '|View full report>',
 			short: false
 		}]);
 		return {
