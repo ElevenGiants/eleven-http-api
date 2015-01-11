@@ -1,6 +1,3 @@
-var utils = require('../utils');
-
-
 /*
  * activity.feed
  * Returns the players activity feed.
@@ -19,4 +16,3 @@ exports.setStatus = function(req, pc) {
 	// TODO: Implement me.
 	return {};
 };
-

@@ -5,6 +5,7 @@ var jsonrpc = require('multitransport-jsonrpc');
 var config = require('config');
 var requireDir = require('require-dir');
 
+global.utils = require('./utils');
 var methods = requireDir('./methods', { recurse: true });
 var rpc = new jsonrpc.client(new jsonrpc.transports.client.tcp(config.rpcHost, config.rpcPort));
 rpc.register(['obj', 'api', 'admin', 'gs']);

@@ -1,6 +1,3 @@
-var utils = require('../utils');
-
-
 /*
  * players.fullInfo
  * Fetch information about a player.

@@ -1,4 +1,3 @@
-var utils = require('../utils');
 var config = require('config');
 var fs = require('fs');
 
