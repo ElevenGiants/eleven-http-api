@@ -32,12 +32,33 @@ exports.error = function(req, pc) {
 	try {
 		var error_id = pc + '_' + Date.now();
 		fs.writeFileSync(config.reportDir + '/' + error_id + '.json', JSON.stringify(req.body));
-		sendMessageToSlack('New error report received: ' + error_id, [{
-			title: req.body.flash_error.split('\n')[0],
-			value: req.body.user_error + 
-				'\n<http://' + (config.slackbot ? config.slackbot.reportLink : '') + '/reports?id=' + error_id + '|View full report>',
-			short: false
-		}]);
+		if (config.slackbot) {
+			var Slack = require('slack-node');
+			var slack = new Slack();
+			slack.setWebHook(config.slackbot.url);
+			var errorText = req.body.flash_error.split('\n')[0];
+			var errorChannel = config.slackbot.channel.client;
+			if (errorText === 'USER REPORTED ERROR') {
+				errorText = req.body.user_error;
+				errorChannel = config.slackbot.channel.user;
+			}
+			slack.webhook({
+				'channel': errorChannel,
+				'icon_emoji': ':crab:',
+				'attachments': [{
+					'fallback': 'New error report received (' + config.slackbot.env + '): ' + error_id + ' (http://' + config.slackbot.reportLink + '/reports?id=' + error_id + ')',
+					'pretext': 'New error report recieved from ' + config.slackbot.env,
+					'title': 'Error report: ' + error_id,
+					'title_link': 'http://' + config.slackbot.reportLink + '/reports?id=' + error_id,
+					'text': errorText,
+					'color': config.slackbot.color
+				}]
+			}, function (err, res) {
+				if (err) {
+					throw new Error('not_saved');
+				}
+			});
+		}
 		return {
 			error_id: error_id
 		};
