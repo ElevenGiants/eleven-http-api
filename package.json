@@ -17,11 +17,13 @@
     "wait.for": "^0.6.6"
   },
   "devDependencies": {
-    "jshint": "^2.5.10"
+    "jshint": "^2.5.10",
+    "jscs": "^1.10.0"
   },
   "scripts": {
     "start": "node --harmony server.js",
-    "lint": "jshint --verbose server.js api.js utils.js extras.js methods"
+    "jshint": "jshint --verbose server.js api.js utils.js extras.js methods",
+    "jscs": "jscs --verbose --reporter inline server.js api.js utils.js extras.js methods"
   },
   "repository": {
     "type": "git",
