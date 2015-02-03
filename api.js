@@ -81,7 +81,7 @@ exports.handle = function(name, req, callback) {
 	}
 	if (typeof handler !== 'function') {
 		callback(new Error('invalid_request'));
-	} 
+	}
 	else {
 		// TODO: Authentication.
 		// pc = 'PA9HIFJTI1E2TJS';
@@ -142,26 +142,4 @@ function rpcCall(type, fname, args) {
 	catch(e) {
 		throw new Error('RPC error');
 	}
-}
-
-
-global.sendMessageToSlack = sendMessageToSlack;
-function sendMessageToSlack(text, fields) {
-	if (!config.slackbot) {
-		return;
-	}
-	var https = require('https');
-	var options = config.slackbot.options;
-	var payload = {
-		"username": "HTTPAPI-Bot",
-		"text": text,
-		"icon_emoji": ":crab:",
-		"fields": fields
-	};
-	var req = https.request(options, null);
-	req.on('error', function err(e) {
-		log.error(e);
-	});
-	req.write(JSON.stringify(payload));
-	req.end();
 }
