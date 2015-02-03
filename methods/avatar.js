@@ -74,3 +74,14 @@ exports.switchOutfit = function(req, pc) {
 	rpcObjCall(pc, 'avatar_set_singles', [{ url: outfit.singles }]);
 	return {};
 }
+
+exports.saveAvatar = function(req, pc) {
+	var items_to_grant = {};
+	for (var i in req.body.wardrobe_items) {
+		items_to_grant[req.body.wardrobe_items[i]] = {granted: true};
+	}
+	rpcObjCall(pc, 'clothing_admin_add_multi', [items_to_grant]);
+	rpcObjCall(pc, 'avatar_admin_set_full', [{hash: req.body.hash}]);
+	return {};
+}
+
