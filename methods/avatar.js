@@ -1,4 +1,8 @@
 //jscs:disable maximumLineLength
+var config = require('config');
+var avatarCommon = require('../avatar_common');
+var celery = require('node-celery');
+
 var tempOutfits = { // Temporary!
 	0: {
 		sheets:  '/c2.glitch.bz/avatars/2012-11-06/4278d3563ac0cc7e32723ab78f01dd9e_1352230889',
@@ -75,4 +79,61 @@ exports.switchOutfit = function switchOutfit(req, pc) {
 	rpcObjCall(pc, 'avatar_set_sheets', [{url: outfit.sheets}]);
 	rpcObjCall(pc, 'avatar_set_singles', [{url: outfit.singles}]);
 	return {};
+};
+
+
+exports.saveAvatar = function saveAvatar(req, pc) {
+	var itemsToGrant = {};
+	for (var i in req.body.wardrobe_items) {
+		itemsToGrant[req.body.wardrobe_items[i]] = {granted: true};
+	}
+	rpcObjCall(pc, 'clothing_admin_add_multi', [itemsToGrant]);
+	rpcObjCall(pc, 'avatar_admin_set_full', [{hash: req.body.hash}]);
+
+	if (config.spritesheetGeneration === 'server') {
+		log.debug('sending spritesheet generation task to celery');
+		var client = celery.createClient({
+			CELERY_BROKER_URL: config.celeryBrokerUrl,
+			// CELERY_RESULT_BACKEND: 'amqp'
+		});
+
+		client.on('error', function onError(err) {
+			log.info(err);
+		});
+
+		client.on('connect', function onConnect() {
+			log.info('celery connected');
+			client.call('eleven.worker.tasks.generateSpritesheets',
+				[pc, req.body.hash, req.body.base_hash],
+				function onResult(result) {
+					log.info('result');
+					log.info(result);
+					client.end();
+				});
+		});
+	}
+
+	return {};
+};
+
+
+/*
+ * avatar.saveSpritesheets
+ */
+exports.saveSpritesheets = function saveSpritesheets(req, pc) {
+	if (config.spritesheetGeneration !== 'client') {
+		return {error: 'Not allowed'};
+	}
+	return avatarCommon.saveAvatarImages(req, pc, 'sheets', 'avatar_set_sheets');
+};
+
+
+/*
+ * avatar.saveSingles
+ */
+exports.saveSingles = function saveSingles(req, pc) {
+	if (config.spritesheetGeneration !== 'client') {
+		return {error: 'Not allowed'};
+	}
+	return avatarCommon.saveAvatarImages(req, pc, 'singles', 'avatar_set_singles');
 };
