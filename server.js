@@ -54,7 +54,8 @@ function handleRequest(req, res, next) {
 	// Handle the request.
 	wait.launchFiber(api.handle, req.params.func, req, function cb(err, data) {
 		if (err) {
-			log.error('Error in HTTP API request "%s" (err: %s)', req.params.func, err.message);
+			log.error('Error in HTTP API request "%s" (err: %s)',
+				req.params.func, err.message);
 		}
 		res.statusCode = (data && data.status) ? data.status : 500;
 		res.write(JSON.stringify(data ? data.body : {

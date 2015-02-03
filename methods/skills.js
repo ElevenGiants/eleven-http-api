@@ -2,7 +2,8 @@
  * skills.getInfo
  * Fetch information about a skill. Includes state information if authed.
  */
-exports.getInfo = function(req, pc) {
+exports.getInfo = function getInfo(req, pc) {
+	/* jshint -W071 */
 	// For now, skill_id = skill_class because we don't know the IDs.
 	if (req.query.skill_id) {
 		req.query.skill_class = req.query.skill_id;
@@ -21,7 +22,7 @@ exports.getInfo = function(req, pc) {
 	if (pc) {
 		var skills = rpcObjCall(pc, 'skills_get_all', [false]);
 		skillInfo = skills[req.query.skill_class];
-	} 
+	}
 	// Not authed. Fetch basic details.
 	else {
 		var skillReqs = [];
@@ -90,7 +91,7 @@ exports.getInfo = function(req, pc) {
 
 	// Fetch data for each req and post_req.
 	var reqs = [];
-	var post_reqs = [];
+	var postReqs = [];
 	var thisReq;
 	for (var o = 0; o < skillInfo.reqs.length; o++) {
 		thisReq = skillInfo.reqs[o];
@@ -99,7 +100,8 @@ exports.getInfo = function(req, pc) {
 			case 'skill':
 				finalReq = {
 					type: 'skill',
-					name: gsData.skills[thisReq.skill].name + ' ' + utils.to_roman_numerals(gsData.skills[thisReq.skill].level),
+					name: gsData.skills[thisReq.skill].name + ' ' +
+						utils.to_roman_numerals(gsData.skills[thisReq.skill].level),
 					class_tsid: thisReq.skill,
 					url: 'skill/' + thisReq.skill,
 					got: thisReq.ok
@@ -140,9 +142,10 @@ exports.getInfo = function(req, pc) {
 	}
 	for (var p = 0; p < skillInfo.post_reqs.length; p++) {
 		thisReq = skillInfo.post_reqs[p];
-		post_reqs.push({
+		postReqs.push({
 			type: 'skill',
-			name: gsData.skills[thisReq.skill].name + ' ' + utils.to_roman_numerals(gsData.skills[thisReq.skill].level),
+			name: gsData.skills[thisReq.skill].name + ' ' +
+				utils.to_roman_numerals(gsData.skills[thisReq.skill].level),
 			class_tsid: thisReq.skill,
 			url: 'skill/' + thisReq.skill,
 			got: thisReq.ok
@@ -154,11 +157,12 @@ exports.getInfo = function(req, pc) {
 		ok: 1,
 		skill_id: gsData.skills[req.query.skill_class].id,
 		class_tsid: req.query.skill_class,
-		name: gsData.skills[req.query.skill_class].name + ' ' + utils.to_roman_numerals(gsData.skills[req.query.skill_class].level),
+		name: gsData.skills[req.query.skill_class].name + ' ' +
+			utils.to_roman_numerals(gsData.skills[req.query.skill_class].level),
 		url: '/skill/' + req.query.skill_class,
 		description: gsData.skills[req.query.skill_class].description,
 		reqs: reqs,
-		post_reqs: post_reqs,
+		post_reqs: postReqs,
 		giants: skillInfo.giants,
 		icon_44: gsData.skills[req.query.skill_class].icons.icon_44,
 		icon_100: gsData.skills[req.query.skill_class].icons.icon_100,
@@ -186,7 +190,7 @@ exports.getInfo = function(req, pc) {
  * skills.learn
  * Start learning a new skill for the authenticated player.
  */
-exports.learn = function(req, pc) {
+exports.learn = function learn(req, pc) {
 	// For now, skill_id = skill_class because we don't know the IDs.
 	if (req.query.skill_id) {
 		req.query.skill_class = req.query.skill_id;
@@ -207,7 +211,7 @@ exports.learn = function(req, pc) {
  * skills.unlearn
  * Start unlearning a skill for the authenticated player.
  */
-exports.unlearn = function(req, pc) {
+exports.unlearn = function unlearn(req, pc) {
 	// For now, skill_id = skill_class because we don't know the IDs.
 	if (req.query.skill_id) {
 		req.query.skill_class = req.query.skill_id;
