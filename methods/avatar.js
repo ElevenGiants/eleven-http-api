@@ -5,7 +5,7 @@ var tempOutfits = { // Temporary!
 	},
 	1: {
 		"sheets":  '/c2.glitch.bz/avatars/2011-09-28/bd84f87fa8316879b36b3c5199314704_1317222270',
-		"singles": '/c2.glitch.bz/avatars/2011-09-28/bd84f87fa8316879b36b3c5199314704_1317222194'		
+		"singles": '/c2.glitch.bz/avatars/2011-09-28/bd84f87fa8316879b36b3c5199314704_1317222194'
 	},
 	2: {
 		"sheets":  '/c2.glitch.bz/avatars/2011-10-13/49932e9cc22ce7547ff2536723dd1e15_1318532620',
@@ -73,7 +73,7 @@ exports.switchOutfit = function(req, pc) {
 	rpcObjCall(pc, 'avatar_set_sheets', [{ url: outfit.sheets }]);
 	rpcObjCall(pc, 'avatar_set_singles', [{ url: outfit.singles }]);
 	return {};
-}
+};
 
 exports.saveAvatar = function(req, pc) {
 	var items_to_grant = {};
@@ -83,5 +83,5 @@ exports.saveAvatar = function(req, pc) {
 	rpcObjCall(pc, 'clothing_admin_add_multi', [items_to_grant]);
 	rpcObjCall(pc, 'avatar_admin_set_full', [{hash: req.body.hash}]);
 	return {};
-}
+};
 
