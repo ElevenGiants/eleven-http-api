@@ -7,12 +7,13 @@ var fs = require('fs');
  * Save the attached error image.
  * (error_id used here to attach image to error report).
  */
-exports.attachErrorImage = function(req, pc) {
+exports.attachErrorImage = function attachErrorImage(req, pc) {
 	try {
 		for (var file in req.files) {
 			if (req.files.hasOwnProperty(file)) {
 				var errorImage = fs.readFileSync(req.files[file].path);
-				fs.writeFileSync(config.reportDir + '/' + req.body.error_id + '.png', errorImage);
+				fs.writeFileSync(config.reportDir + '/' + req.body.error_id +
+					'.png', errorImage);
 			}
 		}
 		return {};
@@ -28,10 +29,11 @@ exports.attachErrorImage = function(req, pc) {
  * Save the generated error report.
  * (error_id is always returned. case_id is returned if the player opens a case.)
  */
-exports.error = function(req, pc) {
+exports.error = function error(req, pc) {
 	try {
-		var error_id = pc + '_' + Date.now();
-		fs.writeFileSync(config.reportDir + '/' + error_id + '.json', JSON.stringify(req.body));
+		var errorId = pc + '_' + Date.now();
+		fs.writeFileSync(config.reportDir + '/' + errorId +
+			'.json', JSON.stringify(req.body));
 		if (config.slackbot) {
 			var Slack = require('slack-node');
 			var slack = new Slack();
@@ -43,15 +45,18 @@ exports.error = function(req, pc) {
 				errorChannel = config.slackbot.channel.user;
 			}
 			slack.webhook({
-				'channel': errorChannel,
-				'icon_emoji': ':crab:',
-				'attachments': [{
-					'fallback': 'New error report received (' + config.slackbot.env + '): ' + error_id + ' (http://' + config.slackbot.reportLink + '/reports?id=' + error_id + ')',
-					'pretext': 'New error report recieved from ' + config.slackbot.env,
-					'title': 'Error report: ' + error_id,
-					'title_link': 'http://' + config.slackbot.reportLink + '/reports?id=' + error_id,
-					'text': errorText,
-					'color': config.slackbot.color
+				channel: errorChannel,
+				icon_emoji: ':crab:',
+				attachments: [{
+					fallback: 'New error report received (' + config.slackbot.env +
+						'): ' +	errorId + ' (http://' + config.slackbot.reportLink +
+						'/reports?id=' + errorId + ')',
+					pretext: 'New error report recieved from ' + config.slackbot.env,
+					title: 'Error report: ' + errorId,
+					title_link: 'http://' + config.slackbot.reportLink +
+						'/reports?id=' + errorId,
+					text: errorText,
+					color: config.slackbot.color
 				}]
 			}, function (err, res) {
 				if (err) {
@@ -60,7 +65,7 @@ exports.error = function(req, pc) {
 			});
 		}
 		return {
-			error_id: error_id
+			error_id: errorId
 		};
 	}
 	catch (e) {
@@ -73,7 +78,7 @@ exports.error = function(req, pc) {
  * client.getShortUrl
  * Shorten the url (used in share achievement buttons).
  */
-exports.getShortUrl = function(req, pc) {
+exports.getShortUrl = function getShortUrl(req, pc) {
 	// TODO: Shorten the URL
 	var body = {
 		url: req.query.url
@@ -86,7 +91,7 @@ exports.getShortUrl = function(req, pc) {
  * client.getToken
  * Provides the client with a host/port and token.
  */
-exports.getToken = function(req, pc) {
+exports.getToken = function getToken(req, pc) {
 	var rsp = rpcCall('gs', 'getConnectData', [pc]);
 	var body = {
 		host: rsp.hostPort,
@@ -102,7 +107,7 @@ exports.getToken = function(req, pc) {
  * per second for non-god users.
  * see com.tinyspeck.debug.PerfLogger in the client
  */
-exports.performance = function(req, pc) {
+exports.performance = function performance(req, pc) {
 	// TODO: Implement me.
 	return {};
 };
