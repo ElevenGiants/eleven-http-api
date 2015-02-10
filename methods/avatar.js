@@ -1,3 +1,6 @@
+var mkdirp = require('mkdirp');
+var wait = require('wait.for');
+
 var tempOutfits = { // Temporary!
 	0: {
 		"sheets":  '/c2.glitch.bz/avatars/2012-11-06/4278d3563ac0cc7e32723ab78f01dd9e_1352230889',
@@ -85,6 +88,7 @@ exports.saveAvatar = function(req, pc) {
 	return {};
 };
 
+
 /*
  * avatar.saveSpritesheets
  */
@@ -92,18 +96,16 @@ exports.saveSpritesheets = function(req, pc) {
 	var fs = require('fs');
 	var url_path = '/c2.glitch.bz/avatars/' + pc + '/sheets/';
 	var dir = __dirname + '/../../eleven-assets' + url_path;
-	if (!fs.existsSync(dir)) {
-		fs.mkdirSync(dir);
-	}
+	wait.for(mkdirp, dir);
 	for (var key in req.files) {
 		var file = req.files[key];
 		//TODO: Store in outfit directories? Store with a timestamp/date/random number like TS did?
-		fs.writeFileSync(dir + file.name + '.png', fs.readFileSync(file.path));
+		data = wait.forMethod(fs, 'readFile', file.path);
+		wait.forMethod(fs, 'writeFile', dir + file.name + '.png', data);
 	}
 
 	//Save sprietsheet paths to GS
 	rpcObjCall(pc, 'avatar_set_sheets', [{ url: url_path + 'image' }]);
-
 	return {};
 };
 
