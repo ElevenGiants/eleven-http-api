@@ -91,12 +91,9 @@ exports.saveAvatar = function(req, pc) {
 };
 
 
-/*
- * avatar.saveSpritesheets
- */
-exports.saveSpritesheets = function(req, pc) {
+function saveAvatarImages(req, pc, dir, apiFunc) {
 	var fs = require('fs');
-	var url_path = '/c2.glitch.bz/avatars/' + pc + '/sheets/';
+	var url_path = '/c2.glitch.bz/avatars/' + pc + '/' + dir + '/';
 	var dir = __dirname + '/../../eleven-assets' + url_path;
 	wait.for(mkdirp, dir);
 	for (var key in req.files) {
@@ -107,8 +104,16 @@ exports.saveSpritesheets = function(req, pc) {
 	}
 
 	//Save sprietsheet paths to GS
-	rpcObjCall(pc, 'avatar_set_sheets', [{ url: url_path + 'image' }]);
+	rpcObjCall(pc, apiFunc, [{ url: url_path + 'image' }]);
 	return {};
+}
+
+
+/*
+ * avatar.saveSpritesheets
+ */
+exports.saveSpritesheets = function(req, pc) {
+	return saveAvatarImages(req, pc, 'sheets', 'avatar_set_sheets');
 };
 
 
@@ -116,20 +121,5 @@ exports.saveSpritesheets = function(req, pc) {
  * avatar.saveSingles
  */
 exports.saveSingles = function(req, pc) {
-	var fs = require('fs');
-	var url_path = '/c2.glitch.bz/avatars/' + pc + '/singles/';
-	var dir = __dirname + '/../../eleven-assets' + url_path;
-	if (!fs.existsSync(dir)) {
-		fs.mkdirSync(dir);
-	}
-	for (var key in req.files) {
-		var file = req.files[key];
-		//TODO: Store in outfit directories? Store with a timestamp/date/random number like TS did?
-		fs.writeFileSync(dir + file.name + '.png', fs.readFileSync(file.path));
-	}
-
-	//Save sprietsheet paths to GS
-	rpcObjCall(pc, 'avatar_set_singles', [{ url: url_path + 'image' }]);
-
-	return {};
+	return saveAvatarImages(req, pc, 'singles', 'avatar_set_singles');
 };
