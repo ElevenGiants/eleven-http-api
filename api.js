@@ -1,26 +1,27 @@
 require('harmony-reflect');
-var fs = require('fs');
 var wait = require('wait.for');
 var jsonrpc = require('multitransport-jsonrpc');
 var config = require('config');
 var requireDir = require('require-dir');
 
 global.utils = require('./utils');
-var methods = requireDir('./methods', { recurse: true });
-var rpc = new jsonrpc.client(new jsonrpc.transports.client.tcp(config.rpcHost, config.rpcPort));
+var methods = requireDir('./methods', {recurse: true});
+var rpc = new jsonrpc.client(new jsonrpc.transports.client.tcp(config.rpcHost,
+	config.rpcPort));
 rpc.register(['obj', 'api', 'admin', 'gs']);
 
-var rpcDataProxy = function(type) {
+var rpcDataProxy = function rpcDataProxy(type) {
 	return {
 		get: function (target, property) {
 			if (!target[property]) {
 				// Not in cache. Get (and set) info from RPC.
 				try {
-					var rpcData = rpcCall('api', 'apiGetJSFileObject', [type + '/' + property + '.js']);
+					var rpcData = rpcCall('api', 'apiGetJSFileObject',
+						[type + '/' + property + '.js']);
 					gsData[type][property] = rpcData;
 					log.info('Cached ' + type + '/' + property);
 				}
-				catch(e) {
+				catch (e) {
 					// Failed to get info via RPC.
 				}
 			}
@@ -40,7 +41,7 @@ var gsData = {
 global.gsData = gsData;
 
 
-exports.init = function() {
+exports.init = function init() {
 	// Fetch GSJS config (skills, locations and upgrades).
 	log.info('Fetching GSJS config...');
 	var gsjsConfig = rpcCall('gs', 'getGsjsConfig');
@@ -51,25 +52,25 @@ exports.init = function() {
 
 	// Fetch extra Items (not found in GSJS).
 	log.info('Fetching extra items...');
-	var extra_items = require('./extras').extra_items;
-	Object.keys(extra_items).forEach(function store(class_tsid) {
-		log.info('Loading extra item ' + class_tsid + ' from extras.js');
-		extra_items[class_tsid].missing_item = 1;
-		gsData.items[class_tsid] = extra_items[class_tsid];
+	var extraItems = require('./extras').extra_items;
+	Object.keys(extraItems).forEach(function store(classTSID) {
+		log.info('Loading extra item ' + classTSID + ' from extras.js');
+		extraItems[classTSID].missing_item = 1;
+		gsData.items[classTSID] = extraItems[classTSID];
 	});
 
 	// TODO: Fetch Wardrobe/Vanity (fetch from a database after namerizer)
 };
 
 
-exports.handle = function(name, req, callback) {
+exports.handle = function handle(name, req, callback) {
 	var handler;
 	try {
 		var parts = name.split('.');
-		if (parts.length == 3) {
+		if (parts.length === 3) {
 			handler = methods[parts[0]][parts[1]][parts[2]];
 		}
-		else if (parts.length == 2) {
+		else if (parts.length === 2) {
 			handler = methods[parts[0]][parts[1]];
 		}
 		else {
@@ -90,7 +91,8 @@ exports.handle = function(name, req, callback) {
 			var ret = handler(req, pc);
 			ret = getRes(ret);
 			callback(null, ret);
-		} catch (e) {
+		}
+		catch (e) {
 			log.error(e);
 			callback(new Error(e.message));
 		}
@@ -102,9 +104,10 @@ function getRes(body, status) {
 	if (body.error) {
 		return {
 			status: 200,
-			body: { ok: 0, error: body.error }
+			body: {ok: 0, error: body.error}
 		};
-	} else {
+	}
+	else {
 		body.ok = 1;
 		return {
 			status: 200,
@@ -127,7 +130,7 @@ function rpcObjCall(obj, fname, args) {
 		var res = wait.forMethod(rpc, 'obj', 'HTTPAPI', obj, fname, args);
 		return res;
 	}
-	catch(e) {
+	catch (e) {
 		throw new Error('RPC error');
 	}
 }
@@ -139,7 +142,7 @@ function rpcCall(type, fname, args) {
 		var res = wait.forMethod(rpc, type, 'HTTPAPI', fname, args);
 		return res;
 	}
-	catch(e) {
+	catch (e) {
 		throw new Error('RPC error');
 	}
 }

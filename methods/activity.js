@@ -2,7 +2,7 @@
  * activity.feed
  * Returns the players activity feed.
  */
-exports.feed = function(req, pc) {
+exports.feed = function feed(req, pc) {
 	// TODO: Implement me.
 	return {};
 };
@@ -12,7 +12,7 @@ exports.feed = function(req, pc) {
  * activity.setStatus
  * Sets the players activity status.
  */
-exports.setStatus = function(req, pc) {
+exports.setStatus = function setStatus(req, pc) {
 	// TODO: Implement me.
 	return {};
 };
