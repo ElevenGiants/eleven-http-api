@@ -5,6 +5,7 @@
 	"tmpDir": "tmp",
 	"logDir": "log",
 	"reportDir": "reports",
+    "allowClientSpritesheets": false,
 	"bunyan": {
 		"name": "HTTPAPI",
 		"src": true,

@@ -1,5 +1,8 @@
+var config = require('config');
+
 var mkdirp = require('mkdirp');
 var wait = require('wait.for');
+
 
 //jscs:disable maximumLineLength
 var tempOutfits = { // Temporary!
@@ -113,6 +116,9 @@ function saveAvatarImages(req, pc, dir, apiFunc) {
  * avatar.saveSpritesheets
  */
 exports.saveSpritesheets = function(req, pc) {
+	if (!config.allowClientSpritesheets) {
+		return {error: "Not allowed"};
+	}
 	return saveAvatarImages(req, pc, 'sheets', 'avatar_set_sheets');
 };
 
@@ -121,5 +127,8 @@ exports.saveSpritesheets = function(req, pc) {
  * avatar.saveSingles
  */
 exports.saveSingles = function(req, pc) {
+	if (!config.allowClientSpritesheets) {
+		return {error: "Not allowed"};
+	}
 	return saveAvatarImages(req, pc, 'singles', 'avatar_set_singles');
 };

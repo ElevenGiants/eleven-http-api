@@ -3,5 +3,6 @@
 	"rpcHost": "192.168.23.23",
 	"rpcPort": 6001,
 	"tmpDir": "tmp",
-	"logDir": "log"
+	"logDir": "log",
+    "allowClientSpritesheets": true
 }
