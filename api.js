@@ -67,14 +67,14 @@ exports.handle = function handle(name, req, callback) {
 	var handler;
 	try {
 		var parts = name.split('.');
-		if (parts.length === 3) {
-			handler = methods[parts[0]][parts[1]][parts[2]];
-		}
-		else if (parts.length === 2) {
-			handler = methods[parts[0]][parts[1]];
-		}
-		else {
+		parts.reverse();
+		if (parts.length == 0) {
 			callback(new Error('invalid_request'));
+			return;
+		}
+		handler = methods;
+		while (parts.length > 0) {
+			handler = handler[parts.pop()];
 		}
 	}
 	catch (e) {
