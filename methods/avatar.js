@@ -1,10 +1,9 @@
-var config = require('config');
-
-var mkdirp = require('mkdirp');
-var wait = require('wait.for');
-
-
 //jscs:disable maximumLineLength
+var config = require('config');
+var avatar_common = require('../avatar_common');
+var celery = require('node-celery');
+var request = require('request');
+
 var tempOutfits = { // Temporary!
 	0: {
 		sheets:  '/c2.glitch.bz/avatars/2012-11-06/4278d3563ac0cc7e32723ab78f01dd9e_1352230889',
@@ -83,52 +82,72 @@ exports.switchOutfit = function switchOutfit(req, pc) {
 	return {};
 };
 
-exports.saveAvatar = function(req, pc) {
+
+exports.saveAvatar = function saveAvatar(req, pc) {
 	var items_to_grant = {};
 	for (var i in req.body.wardrobe_items) {
 		items_to_grant[req.body.wardrobe_items[i]] = {granted: true};
 	}
 	rpcObjCall(pc, 'clothing_admin_add_multi', [items_to_grant]);
 	rpcObjCall(pc, 'avatar_admin_set_full', [{hash: req.body.hash}]);
-	return {};
-};
 
+	if (config.spritesheetGeneration == 'server') {
+		/*
+		TODO!
+		request.post(
+		    'http://www.yoursite.com/formpage',
+		    { form: { key: 'value' } },
+		    function (error, response, body) {
+		        if (!error && response.statusCode == 200) {
+		            console.log(body)
+		        }
+		    }
+		);*/
+		/*
+		This shit no work, post a message to python instead
+		*/
+		log.info('celery');
+		var client = celery.createClient({
+	        CELERY_BROKER_URL: config.celeryBrokerUrl,
+	        //CELERY_RESULT_BACKEND: 'amqp'
+	    });
 
-function saveAvatarImages(req, pc, dir, apiFunc) {
-	var fs = require('fs');
-	var url_path = '/c2.glitch.bz/avatars/' + pc + '/' + dir + '/';
-	var dir = __dirname + '/../../eleven-assets' + url_path;
-	wait.for(mkdirp, dir);
-	for (var key in req.files) {
-		var file = req.files[key];
-		//TODO: Store in outfit directories? Store with a timestamp/date/random number like TS did?
-		data = wait.forMethod(fs, 'readFile', file.path);
-		wait.forMethod(fs, 'writeFile', dir + file.name + '.png', data);
+		client.on('error', function(err) {
+		    log.info(err);
+		});
+
+		client.on('connect', function() {
+			log.info('celery connected');
+		    client.call('eleven.tasks.generateSpritesheets', [pc, req.body.hash, req.body.base_hash], function(result) {
+		    	log.info('result');
+		        log.info(result);
+		        client.end();
+		    });
+		});
+		/**/
 	}
 
-	//Save sprietsheet paths to GS
-	rpcObjCall(pc, apiFunc, [{ url: url_path + 'image' }]);
 	return {};
-}
+};
 
 
 /*
  * avatar.saveSpritesheets
  */
-exports.saveSpritesheets = function(req, pc) {
-	if (!config.allowClientSpritesheets) {
+exports.saveSpritesheets = function saveSpritesheets(req, pc) {
+	if (config.spritesheetGeneration != 'client') {
 		return {error: "Not allowed"};
 	}
-	return saveAvatarImages(req, pc, 'sheets', 'avatar_set_sheets');
+	return avatar_common.saveAvatarImages(req, pc, 'sheets', 'avatar_set_sheets');
 };
 
 
 /*
  * avatar.saveSingles
  */
-exports.saveSingles = function(req, pc) {
-	if (!config.allowClientSpritesheets) {
+exports.saveSingles = function saveSingles(req, pc) {
+	if (config.spritesheetGeneration != 'client') {
 		return {error: "Not allowed"};
 	}
-	return saveAvatarImages(req, pc, 'singles', 'avatar_set_singles');
+	return avatar_common.saveAvatarImages(req, pc, 'singles', 'avatar_set_singles');
 };

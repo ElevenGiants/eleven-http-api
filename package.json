@@ -14,7 +14,9 @@
     "body-parser": "^1.9.3",
     "connect-multiparty": "^1.2.5",
     "require-dir": "^0.1.0",
-    "wait.for": "^0.6.6"
+    "wait.for": "^0.6.6",
+    "node-celery": "^0.2.2",
+    "request": "^2.53.0"
   },
   "devDependencies": {
     "jshint": "^2.5.10",

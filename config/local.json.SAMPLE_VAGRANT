@@ -4,5 +4,5 @@
 	"rpcPort": 6001,
 	"tmpDir": "tmp",
 	"logDir": "log",
-    "allowClientSpritesheets": true
+    "spritesheetGeneration": "client"
 }
