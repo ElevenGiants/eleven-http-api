@@ -6,11 +6,11 @@ var config = require('config');
  * god.avatar.saveSpritesheets
  */
 exports.saveSpritesheets = function saveSpritesheets(req, pc) {
-    //TODO: god authentication
-    if (config.spritesheetGeneration !== 'server') {
-        return {error: 'Not allowed'};
-    }
-    return avatar_common.saveAvatarImages(req, pc, 'sheets', 'avatar_set_sheets');
+	//TODO: god authentication
+	if (config.spritesheetGeneration !== 'server') {
+		return {error: 'Not allowed'};
+	}
+	return avatar_common.saveAvatarImages(req, pc, 'sheets', 'avatar_set_sheets');
 };
 
 
@@ -18,9 +18,9 @@ exports.saveSpritesheets = function saveSpritesheets(req, pc) {
  * god.avatar.saveSingles
  */
 exports.saveSingles = function saveSingles(req, pc) {
-    //TODO: god authentication
-    if (config.spritesheetGeneration !== 'server') {
-        return {error: 'Not allowed'};
-    }
-    return avatar_common.saveAvatarImages(req, pc, 'singles', 'avatar_set_singles');
+	//TODO: god authentication
+	if (config.spritesheetGeneration !== 'server') {
+		return {error: 'Not allowed'};
+	}
+	return avatar_common.saveAvatarImages(req, pc, 'singles', 'avatar_set_singles');
 };

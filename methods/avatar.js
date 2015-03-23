@@ -93,21 +93,21 @@ exports.saveAvatar = function saveAvatar(req, pc) {
 	if (config.spritesheetGeneration === 'server') {
 		log.debug('sending spritesheet generation task to celery');
 		var client = celery.createClient({
-	        CELERY_BROKER_URL: config.celeryBrokerUrl,
-	        //CELERY_RESULT_BACKEND: 'amqp'
-	    });
+			CELERY_BROKER_URL: config.celeryBrokerUrl,
+			//CELERY_RESULT_BACKEND: 'amqp'
+		});
 
 		client.on('error', function(err) {
-		    log.info(err);
+			log.info(err);
 		});
 
 		client.on('connect', function() {
 			log.info('celery connected');
-		    client.call('eleven.tasks.generateSpritesheets', [pc, req.body.hash, req.body.base_hash], function(result) {
-		    	log.info('result');
-		        log.info(result);
-		        client.end();
-		    });
+			client.call('eleven.tasks.generateSpritesheets', [pc, req.body.hash, req.body.base_hash], function(result) {
+				log.info('result');
+				log.info(result);
+				client.end();
+			});
 		});
 	}
 
