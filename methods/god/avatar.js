@@ -1,4 +1,4 @@
-var avatar_common = require('../../avatar_common');
+var avatarCommon = require('../../avatar_common');
 var config = require('config');
 
 
@@ -10,7 +10,7 @@ exports.saveSpritesheets = function saveSpritesheets(req, pc) {
 	if (config.spritesheetGeneration !== 'server') {
 		return {error: 'Not allowed'};
 	}
-	return avatar_common.saveAvatarImages(req, pc, 'sheets', 'avatar_set_sheets');
+	return avatarCommon.saveAvatarImages(req, pc, 'sheets', 'avatar_set_sheets');
 };
 
 
@@ -22,5 +22,5 @@ exports.saveSingles = function saveSingles(req, pc) {
 	if (config.spritesheetGeneration !== 'server') {
 		return {error: 'Not allowed'};
 	}
-	return avatar_common.saveAvatarImages(req, pc, 'singles', 'avatar_set_singles');
+	return avatarCommon.saveAvatarImages(req, pc, 'singles', 'avatar_set_singles');
 };
