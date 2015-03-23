@@ -7,8 +7,8 @@ var config = require('config');
  */
 exports.saveSpritesheets = function saveSpritesheets(req, pc) {
     //TODO: god authentication
-    if (config.spritesheetGeneration != 'server') {
-        return {error: "Not allowed"};
+    if (config.spritesheetGeneration !== 'server') {
+        return {error: 'Not allowed'};
     }
     return avatar_common.saveAvatarImages(req, pc, 'sheets', 'avatar_set_sheets');
 };
@@ -19,8 +19,8 @@ exports.saveSpritesheets = function saveSpritesheets(req, pc) {
  */
 exports.saveSingles = function saveSingles(req, pc) {
     //TODO: god authentication
-    if (config.spritesheetGeneration != 'server') {
-        return {error: "Not allowed"};
+    if (config.spritesheetGeneration !== 'server') {
+        return {error: 'Not allowed'};
     }
     return avatar_common.saveAvatarImages(req, pc, 'singles', 'avatar_set_singles');
 };

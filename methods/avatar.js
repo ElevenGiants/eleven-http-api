@@ -90,7 +90,7 @@ exports.saveAvatar = function saveAvatar(req, pc) {
 	rpcObjCall(pc, 'clothing_admin_add_multi', [items_to_grant]);
 	rpcObjCall(pc, 'avatar_admin_set_full', [{hash: req.body.hash}]);
 
-	if (config.spritesheetGeneration == 'server') {
+	if (config.spritesheetGeneration === 'server') {
 		log.debug('sending spritesheet generation task to celery');
 		var client = celery.createClient({
 	        CELERY_BROKER_URL: config.celeryBrokerUrl,
@@ -119,8 +119,8 @@ exports.saveAvatar = function saveAvatar(req, pc) {
  * avatar.saveSpritesheets
  */
 exports.saveSpritesheets = function saveSpritesheets(req, pc) {
-	if (config.spritesheetGeneration != 'client') {
-		return {error: "Not allowed"};
+	if (config.spritesheetGeneration !== 'client') {
+		return {error: 'Not allowed'};
 	}
 	return avatar_common.saveAvatarImages(req, pc, 'sheets', 'avatar_set_sheets');
 };
@@ -130,8 +130,8 @@ exports.saveSpritesheets = function saveSpritesheets(req, pc) {
  * avatar.saveSingles
  */
 exports.saveSingles = function saveSingles(req, pc) {
-	if (config.spritesheetGeneration != 'client') {
-		return {error: "Not allowed"};
+	if (config.spritesheetGeneration !== 'client') {
+		return {error: 'Not allowed'};
 	}
 	return avatar_common.saveAvatarImages(req, pc, 'singles', 'avatar_set_singles');
 };
