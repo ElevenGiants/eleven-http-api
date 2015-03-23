@@ -2,7 +2,6 @@
 var config = require('config');
 var avatar_common = require('../avatar_common');
 var celery = require('node-celery');
-var request = require('request');
 
 var tempOutfits = { // Temporary!
 	0: {
@@ -92,21 +91,7 @@ exports.saveAvatar = function saveAvatar(req, pc) {
 	rpcObjCall(pc, 'avatar_admin_set_full', [{hash: req.body.hash}]);
 
 	if (config.spritesheetGeneration == 'server') {
-		/*
-		TODO!
-		request.post(
-		    'http://www.yoursite.com/formpage',
-		    { form: { key: 'value' } },
-		    function (error, response, body) {
-		        if (!error && response.statusCode == 200) {
-		            console.log(body)
-		        }
-		    }
-		);*/
-		/*
-		This shit no work, post a message to python instead
-		*/
-		log.info('celery');
+		log.debug('sending spritesheet generation task to celery');
 		var client = celery.createClient({
 	        CELERY_BROKER_URL: config.celeryBrokerUrl,
 	        //CELERY_RESULT_BACKEND: 'amqp'
@@ -124,7 +109,6 @@ exports.saveAvatar = function saveAvatar(req, pc) {
 		        client.end();
 		    });
 		});
-		/**/
 	}
 
 	return {};
