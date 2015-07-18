@@ -21,7 +21,7 @@
     "jscs": "^1.10.0"
   },
   "scripts": {
-    "start": "node --harmony server.js",
+    "start": "node --harmony_proxies server.js",
     "jshint": "jshint --verbose server.js api.js utils.js extras.js methods",
     "jscs": "jscs --verbose --reporter inline server.js api.js utils.js extras.js methods"
   },

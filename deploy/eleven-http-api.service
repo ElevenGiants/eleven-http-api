@@ -5,7 +5,7 @@ After=eleven-server.service
 
 [Service]
 WorkingDirectory=/eleven/eleven-http-api
-ExecStart=/usr/bin/node --harmony ./server.js
+ExecStart=/usr/bin/node --harmony_proxies ./server.js
 Type=simple
 Restart=always
 RestartSec=1s
