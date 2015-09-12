@@ -37,7 +37,7 @@ exports.error = function error(req, pc) {
 		if (config.slackbot) {
 			var Slack = require('slack-node');
 			var slack = new Slack();
-			slack.setWebHook(config.slackbot.url);
+			slack.setWebhook(config.slackbot.url);
 			var errorText = req.body.flash_error.split('\n')[0];
 			var errorChannel = config.slackbot.channel.client;
 			if (errorText === 'USER REPORTED ERROR') {
