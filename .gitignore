@@ -1,3 +1,4 @@
 config/local.json
-log
-reports
+/reports
+/log
+/tmp
