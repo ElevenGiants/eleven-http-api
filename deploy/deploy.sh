@@ -13,8 +13,8 @@ if [[ ! -d "$src_dir" ]]; then
 fi
 
 # copy everything over to target host
-rsync --compress --recursive --exclude=".git*" -e "ssh -p ${SSH_PORT}" "${src_dir}/" jenkins@${SSH_HOST}:/eleven/eleven-http-api.new
+rsync --compress --recursive --exclude=".git*" -e "ssh -p ${SSH_PORT}" "${src_dir}/" ${SSH_USER}@${SSH_HOST}:/eleven/eleven-http-api.new
 
 # run remote deployment script (moves old version out of the way, replaces it
 # with new one and restarts service)
-ssh -T -p ${SSH_PORT} jenkins@${SSH_HOST} /eleven/eleven-http-api.new/deploy/deploy-remote.sh
+ssh -T -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} /eleven/eleven-http-api.new/deploy/deploy-remote.sh
