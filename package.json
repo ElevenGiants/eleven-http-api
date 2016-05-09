@@ -2,23 +2,25 @@
   "name": "eleven-http-api",
   "version": "0.0.1",
   "description": "Eleven Giants HTTP API",
-  "homepage": "http://elevengiants.com",
+  "homepage": "https://github.com/ElevenGiants/eleven-http-api",
   "main": "server.js",
   "engines": {
     "node": "6.x"
   },
   "dependencies": {
+    "body-parser": "^1.9.3",
     "bunyan": "^1.2.3",
     "config": "^1.8.1",
-    "express": "^4.10.4",
-    "multitransport-jsonrpc": "^0.7.2",
-    "mkdirp": "^0.5.0",
-    "body-parser": "^1.9.3",
     "connect-multiparty": "^1.2.5",
-    "require-dir": "^0.1.0",
-    "wait.for": "^0.6.6",
+    "express": "^4.10.4",
+    "ipaddr.js": "^1.1.0",
+    "mkdirp": "^0.5.0",
+    "multitransport-jsonrpc": "^0.7.2",
     "node-celery": "^0.2.2",
-    "request": "^2.53.0"
+    "range_check": "^1.2.0",
+    "request": "^2.53.0",
+    "require-dir": "^0.1.0",
+    "wait.for": "^0.6.6"
   },
   "devDependencies": {
     "jshint": "^2.5.10",
@@ -37,6 +39,5 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ElevenGiants/eleven-http-api/issues"
-  },
-  "homepage": "https://github.com/ElevenGiants/eleven-http-api"
+  }
 }

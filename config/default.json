@@ -2,6 +2,7 @@
 	"port": 9001,
 	"rpcHost": "127.0.0.1",
 	"rpcPort": 7000,
+	"internalIpRange": ["10.0.0.0/8", "::ffff:10.0.0.0/104", "192.168.0.0/16", "::ffff:192.168.0.0/112", "127.0.0.0/8", "::ffff:127.0.0.0/104", "fc00::/7"],
 	"tmpDir": "tmp",
 	"logDir": "log",
 	"reportDir": "reports",

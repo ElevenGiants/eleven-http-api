@@ -6,7 +6,6 @@ var config = require('config');
  * god.avatar.saveSpritesheets
  */
 exports.saveSpritesheets = function saveSpritesheets(req, pc) {
-	//TODO: god authentication
 	if (config.spritesheetGeneration !== 'server') {
 		return {error: 'Not allowed'};
 	}
@@ -18,7 +17,6 @@ exports.saveSpritesheets = function saveSpritesheets(req, pc) {
  * god.avatar.saveSingles
  */
 exports.saveSingles = function saveSingles(req, pc) {
-	//TODO: god authentication
 	if (config.spritesheetGeneration !== 'server') {
 		return {error: 'Not allowed'};
 	}
