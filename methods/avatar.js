@@ -1,7 +1,7 @@
 //jscs:disable maximumLineLength
 var config = require('config');
-var avatarCommon = require('../avatar_common');
 var celery = require('node-celery');
+var godAvatar = require('./god/avatar');
 
 var tempOutfits = { // Temporary!
 	0: {
@@ -90,50 +90,37 @@ exports.saveAvatar = function saveAvatar(req, pc) {
 	rpcObjCall(pc, 'clothing_admin_add_multi', [itemsToGrant]);
 	rpcObjCall(pc, 'avatar_admin_set_full', [{hash: req.body.hash}]);
 
-	if (config.spritesheetGeneration === 'server') {
-		log.debug('sending spritesheet generation task to celery');
-		var client = celery.createClient({
-			CELERY_BROKER_URL: config.celeryBrokerUrl,
-			// CELERY_RESULT_BACKEND: 'amqp'
-		});
-
-		client.on('error', function onError(err) {
-			log.info(err);
-		});
-
-		client.on('connect', function onConnect() {
-			log.info('celery connected');
-			client.call('eleven.worker.tasks.generateSpritesheets',
-				[pc, req.body.hash, req.body.base_hash],
-				function onResult(result) {
-					log.info('result');
-					log.info(result);
-					client.end();
-				});
-		});
+	if (config.spritesheetGeneration !== 'server') {
+		log.debug('client-side spritesheet generation, skipping celery task');
+		return {};
 	}
+
+	log.debug('sending spritesheet generation task to celery');
+	var client = celery.createClient({
+		CELERY_BROKER_URL: config.celeryBrokerUrl,
+		// CELERY_RESULT_BACKEND: 'amqp'
+	});
+
+	client.on('error', function onError(err) {
+		log.info(err);
+	});
+
+	client.on('connect', function onConnect() {
+		log.info('celery connected');
+		client.call('eleven.worker.tasks.generateSpritesheets',
+			[pc, req.body.hash, req.body.base_hash],
+			function onResult(result) {
+				log.info('result');
+				log.info(result);
+				client.end();
+			});
+	});
 
 	return {};
 };
 
 
-/*
- * avatar.saveSpritesheets
- */
-exports.saveSpritesheets = function saveSpritesheets(req, pc) {
-	if (config.spritesheetGeneration !== 'client') {
-		return {error: 'Not allowed'};
-	}
-	return avatarCommon.saveAvatarImages(req, pc, 'sheets', 'avatar_set_sheets');
-};
-
-
-/*
- * avatar.saveSingles
- */
-exports.saveSingles = function saveSingles(req, pc) {
-	if (config.spritesheetGeneration !== 'client') {
-		return {error: 'Not allowed'};
-	}
-	return avatarCommon.saveAvatarImages(req, pc, 'singles', 'avatar_set_singles');
-};
+if (config.spritesheetGeneration === 'client') {
+	exports.saveSpritesheets = godAvatar.saveSpritesheets;
+	exports.saveSingles = godAvatar.saveSingles;
+}
