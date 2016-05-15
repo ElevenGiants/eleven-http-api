@@ -6,6 +6,10 @@
 	"tmpDir": "tmp",
 	"logDir": "log",
 	"reportDir": "reports",
+	"assetDir": "assets",
+	"assetPaths": {
+		"avatars": "/c2.glitch.bz/avatars"
+	},
 	"spritesheetGeneration": "server",
 	"celeryBrokerUrl": "amqp://guest:guest@localhost:5672//",
 	"bunyan": {
