@@ -86,7 +86,7 @@ exports.info = function info(req, pc) {
 				item_url_part: itemClass,
 				name_single: details.name_single,
 				name_plural: details.name_plural,
-				info_url: '/item/' + itemClass,
+				info_url: '/items/' + itemClass,
 				// is_sdbable: details.is_sdbable
 				is_sdbable: false
 			};
