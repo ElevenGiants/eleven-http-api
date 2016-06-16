@@ -4,11 +4,13 @@
   "description": "Eleven Giants HTTP API",
   "homepage": "http://elevengiants.com",
   "main": "server.js",
+  "engines": {
+    "node": "6.x"
+  },
   "dependencies": {
     "bunyan": "^1.2.3",
     "config": "^1.8.1",
     "express": "^4.10.4",
-    "harmony-reflect": "^1.1.1",
     "multitransport-jsonrpc": "^0.7.2",
     "mkdirp": "^0.5.0",
     "body-parser": "^1.9.3",
@@ -21,7 +23,7 @@
     "jscs": "^1.10.0"
   },
   "scripts": {
-    "start": "node --harmony_proxies server.js",
+    "start": "node server.js",
     "jshint": "jshint --verbose server.js api.js utils.js extras.js methods",
     "jscs": "jscs --verbose --reporter inline server.js api.js utils.js extras.js methods"
   },

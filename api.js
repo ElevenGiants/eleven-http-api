@@ -1,4 +1,3 @@
-require('harmony-reflect');
 var wait = require('wait.for');
 var jsonrpc = require('multitransport-jsonrpc');
 var config = require('config');
@@ -31,9 +30,9 @@ var rpcDataProxy = function rpcDataProxy(type) {
 };
 
 var gsData = {
-	achievements: Proxy({}, rpcDataProxy('achievements')),
-	items: Proxy({}, rpcDataProxy('items')),
-	quests: Proxy({}, rpcDataProxy('quests')),
+	achievements: new Proxy({}, rpcDataProxy('achievements')),
+	items: new Proxy({}, rpcDataProxy('items')),
+	quests: new Proxy({}, rpcDataProxy('quests')),
 	skills: {},
 	locations: {},
 	upgrades: {}
