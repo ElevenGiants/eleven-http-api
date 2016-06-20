@@ -5,6 +5,8 @@
 	"tmpDir": "tmp",
 	"logDir": "log",
 	"reportDir": "reports",
+	"spritesheetGeneration": "server",
+	"celeryBrokerUrl": "amqp://guest:guest@localhost:5672//",
 	"bunyan": {
 		"name": "HTTPAPI",
 		"src": true,
