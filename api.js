@@ -1,6 +1,7 @@
 var wait = require('wait.for');
 var jsonrpc = require('multitransport-jsonrpc');
 var config = require('config');
+var rangeCheck = require('range_check');
 var requireDir = require('require-dir');
 
 global.utils = require('./utils');
@@ -66,11 +67,17 @@ exports.handle = function handle(name, req, callback) {
 	var handler;
 	try {
 		var parts = name.split('.');
-		parts.reverse();
-		if (parts.length == 0) {
+		if (!parts.length) {
 			callback(new Error('invalid_request'));
 			return;
 		}
+		if (parts[0] === 'god' && config.internalIpRange) {
+			var srcIp = req.connection.remoteAddress;
+			if (!rangeCheck.inRange(srcIp, config.internalIpRange)) {
+				return callback(new Error('unauthorized_internal_request'));
+			}
+		}
+		parts.reverse();
 		handler = methods;
 		while (parts.length > 0) {
 			handler = handler[parts.pop()];
