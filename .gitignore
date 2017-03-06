@@ -2,3 +2,4 @@ config/local.json
 /reports
 /log
 /tmp
+/node_modules
