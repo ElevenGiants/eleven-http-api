@@ -1,6 +1,6 @@
 {
   "name": "eleven-http-api",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Eleven Giants HTTP API",
   "homepage": "https://github.com/ElevenGiants/eleven-http-api",
   "main": "server.js",
@@ -31,6 +31,21 @@
     "jshint": "jshint --verbose server.js api.js utils.js extras.js methods",
     "jscs": "jscs --verbose --reporter inline server.js api.js utils.js extras.js methods"
   },
+  "contributors": [
+    {
+      "name": "Joey Thomas",
+      "email": "joey.thomas@outlook.com"
+    },
+    {
+      "name": "Markus Dolic",
+      "email": "aroha@elevengiants.com",
+      "url": "https://twitter.com/ElevenAroha"
+    },
+    {
+      "name": "Justin Patrin",
+      "email": "papercrane@reversefold.com"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/ElevenGiants/eleven-http-api.git"
